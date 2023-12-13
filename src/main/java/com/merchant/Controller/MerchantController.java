@@ -5,6 +5,7 @@ import com.merchant.Authentication.MerchantLogin;
 import com.merchant.Data.Entity.Merchant;
 import com.merchant.Model.RequestBody.MerchantRequest;
 import com.merchant.Model.ResponseBody.MerchantResponse;
+import com.merchant.Model.ResponseBody.ResponseClass;
 import com.merchant.Service.MerchantService.ServiceImplimentation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,18 @@ public class MerchantController {
     public ResponseEntity<List> getMerchants(@Valid @RequestParam() String businessName) {
         return merchantService.getMerchant(businessName);
     }
-    @DeleteMapping
+
+    @PutMapping
     @RequestMapping("/delete{email}")
     public ResponseEntity deleteMerchant(@RequestParam() String email){
         return merchantService.deleteByEmail(email);
     }
+
+    @DeleteMapping
+    @RequestMapping("/activate{email}")
+    public ResponseEntity<ResponseClass> toActivate(@PathVariable String email){ 
+
+        return merchantService.toActivateMerchant(email);
+    }
+
 }

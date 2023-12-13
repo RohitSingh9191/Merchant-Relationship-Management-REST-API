@@ -16,4 +16,6 @@ public interface ServiceInterface {
     ResponseEntity<List> getMerchant(String  bussnesName);
 
     ResponseEntity deleteByEmail(String email);
+
+    ResponseEntity<ResponseClass> toActivateMerchant(String data);
 }

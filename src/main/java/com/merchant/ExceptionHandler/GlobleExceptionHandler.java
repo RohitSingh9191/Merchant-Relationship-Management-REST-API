@@ -25,7 +25,6 @@ public class GlobleExceptionHandler {
 
               resp.put(fieldName,messege);
             });
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
     }
 }

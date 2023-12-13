@@ -33,4 +33,6 @@ public class AdminImplimentation implements AdminInterface {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseClass);
     }
 
+
+
 }

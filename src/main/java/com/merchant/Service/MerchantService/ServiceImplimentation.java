@@ -123,21 +123,20 @@ public class ServiceImplimentation implements ServiceInterface {
                 //Get all Sub-Merchant of same Business type
                 String businessName = merchant.getBusinessname();
 
-               // List<GetMerchants> merchantsList = new ArrayList();
+                List<GetMerchants> subMerchantsList = new ArrayList();
+                List<SubMerchant> list = subMerchantRepository.findByBusinessname(businessName);
 
-              List<GetMerchants> list = subMerchantRepository.findWithBusinessName(businessName);
+                for (SubMerchant subMerchant : list) {
+                    GetMerchants getMerchants = new GetMerchants();
+                    getMerchants.setBusinessname(subMerchant.getBusinessname());
+                    getMerchants.setEmail(subMerchant.getEmail());
+                    getMerchants.setPhonenumber(subMerchant.getPhonenumber());
+                    getMerchants.setMerchanttype(subMerchant.getMerchanttype());
+                    getMerchants.setIsactive(subMerchant.getIsactive());
+                    subMerchantsList.add(getMerchants);
 
-     //           for ( GetMerchants gtm: list) {
-//                    GetMerchants getMerchants = new GetMerchants();
-//                    getMerchants.setBusinessname(gtm.getBusinessname());
-//                    getMerchants.setEmail(gtm.getEmail());
-//                    getMerchants.setPhonenumber(gtm.getPhonenumber());
-//                    getMerchants.setMerchanttype(gtm.getMerchanttype());
-//                    getMerchants.setIsactive(gtm.getIsactive());
-//                    merchantsList.add(getMerchants);
-//
-//           }
-                return ResponseEntity.status(HttpStatus.OK).body(list);
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(subMerchantsList);
             } else {
                 responseClass.setResponseMessage("Password is not Match");
                 return ResponseEntity.status(HttpStatus.OK).body(responseClass);
@@ -149,10 +148,20 @@ public class ServiceImplimentation implements ServiceInterface {
 
     @Override
     public ResponseEntity getMerchant(String businessName) {
-        System.out.println("Name Business= " + businessName);
         if (businessName == "") {
-            List list = merchantRepository.findAll();
-            return ResponseEntity.status(HttpStatus.OK).body(list);
+            List<Merchant> list = merchantRepository.findAll();
+            List<GetMerchants> merchantsList = new ArrayList();
+            for (Merchant merchant : list) {
+                GetMerchants getMerchants = new GetMerchants();
+                getMerchants.setBusinessname(merchant.getBusinessname());
+                getMerchants.setEmail(merchant.getEmail());
+                getMerchants.setPhonenumber(merchant.getPhonenumber());
+                getMerchants.setMerchanttype(merchant.getMerchanttype());
+                getMerchants.setIsactive(merchant.getIsactive());
+                merchantsList.add(getMerchants);
+
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(merchantsList);
 
         } else {
             Merchant data = merchantRepository.existBybusinesName(businessName);
@@ -161,7 +170,14 @@ public class ServiceImplimentation implements ServiceInterface {
                 responseClass.setResponseMessage("Data dose not exist");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseClass);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(data);
+
+                GetMerchants getMerchants = new GetMerchants();
+                getMerchants.setBusinessname(data.getBusinessname());
+                getMerchants.setEmail(data.getEmail());
+                getMerchants.setPhonenumber(data.getPhonenumber());
+                getMerchants.setMerchanttype(data.getMerchanttype());
+                getMerchants.setIsactive(data.getIsactive());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getMerchants);
         }
 
     }
@@ -178,6 +194,29 @@ public class ServiceImplimentation implements ServiceInterface {
         }
         responseClass.setResponseMessage("Merchant Dose Not Exist");
         return ResponseEntity.status(HttpStatus.OK).body(responseClass);
+    }
+
+    boolean status = true;
+
+    @Override
+    public ResponseEntity<ResponseClass> toActivateMerchant(String email) {
+        ResponseClass responseClass = new ResponseClass();
+        Merchant merchant = merchantRepository.existEmailId(email);
+        if (merchant != null) {
+            if (status == true) {
+                // merchantRepository.activeUnactive("unActive", email);
+                status = false;
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseClass);
+            } else {
+                //  merchantRepository.activeUnactive("Active", email);
+                status = false;
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseClass);
+            }
+
+        } else {
+            responseClass.setResponseMessage("Merchant is not exist with this Email Id");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseClass);
+        }
     }
 
 }

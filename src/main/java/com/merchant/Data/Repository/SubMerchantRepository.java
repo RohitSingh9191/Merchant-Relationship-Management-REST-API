@@ -13,6 +13,6 @@ public interface SubMerchantRepository extends JpaRepository<SubMerchant,String>
     @Query(nativeQuery = true,value = "select * from submerchant where email=:name")
     SubMerchant existEmailId(@Param("name") String name);
 
-    @Query(nativeQuery = true,value =" select email, phonenumber,businessname,merchanttype,isactive from submerchant where businessname=:name")
-    List findWithBusinessName(@Param("name") String name);
+
+    List<SubMerchant> findByBusinessname(String businessname);
 }

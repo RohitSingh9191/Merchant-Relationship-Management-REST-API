@@ -22,4 +22,9 @@ public interface MerchantRepository extends JpaRepository<Merchant, String> {
     @Modifying
     @Query(nativeQuery = true,value ="UPDATE merchant set isdelete=true where email= :email")
     public void deleteWithEmail(@Param("email") String email);
+
+//    @Transactional
+//    @Modifying
+//    @Query(nativeQuery = true,value ="UPDATE merchant set isactive= where email= :email")
+//    public void activeUnactive(@Param("data") String data,@Param("email") String email);
 }
