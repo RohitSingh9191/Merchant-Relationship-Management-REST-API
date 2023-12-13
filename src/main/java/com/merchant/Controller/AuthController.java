@@ -47,6 +47,7 @@ public class AuthController {
                 .username(userDetails.getUsername()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     private void doAuthenticate(String email, String password) {
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
@@ -55,14 +56,14 @@ public class AuthController {
 
 
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException(" Invalid Username or Password  !!");
+            throw new BadCredentialsException(" Invalid Username or Password ");
         }
 
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public String exceptionHandler() {
-        return "Credentials Invalid !!";
+        return "Credentials Invalid ";
     }
 
 }

@@ -26,22 +26,21 @@ public class ScheduleTasks {
     private MailSenderClass mailSenderClass;
 
 
-
     @Scheduled(cron = "0 27 17 * * ? ")
     public void findAllMerchant() throws InterruptedException, IOException {
         List<Merchant> merchantList = merchantRepository.findAll();
-        String fileName="MerchantDetails.csv";
-        if(!merchantList.isEmpty()){
-            writeDataToCsv(merchantList,fileName);
+        String fileName = "MerchantDetails.csv";
+        if (!merchantList.isEmpty()) {
+            writeDataToCsv(merchantList, fileName);
 
-        try{
-            mailSenderClass.sendMailWithAttachment("rohit2154045@gmail.com","CSV File","Merchant Details","C:\\Users\\NVP\\Downloads\\Java Projects\\MerchantRelationshipManagment\\MerchantDetails.csv");
-        }
-        catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+            try {
+                mailSenderClass.sendMailWithAttachment("rohit2154045@gmail.com", "CSV File", "Merchant Details", "C:\\Users\\NVP\\Downloads\\Java Projects\\MerchantRelationshipManagment\\MerchantDetails.csv");
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
     public void writeDataToCsv(List<Merchant> merchantList, String fileName) throws IOException {
         try (FileWriter writer = new FileWriter(fileName);
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
@@ -52,5 +51,4 @@ public class ScheduleTasks {
             }
         }
     }
-
 }
